@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import random
 
 attempts = 0
@@ -17,65 +19,46 @@ def intro():
             "right position.\n"
             "   Bagels       No digit is correct.\n")
 
+def generate_number():
+    my_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+    random.shuffle(my_list)  #shuffle my_list
+    num = my_list[:3] #slice the list to first 3 numbers
+    #make the slice string
+    my_string = ""
+    for number in num:
+        my_string += str(number)
+    return my_string
 
 
-def get_number():
-    print("I have thought up a number.\n"
-            "  You have 10 guesses to get it.")
+def guess_number():
+    while True:
+        secret_num = generate_number()
+        print(secret_num)
 
-    num_list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-    random.shuffle(num_list)
-    num_1 = str(num_list[0])
-    num_2 = str(num_list[1])
-    num_3 = str(num_list[2])
-    my_num = num_1 + num_2 + num_3;
+        while True:
+            guess_num = str(input("Enter a guess "))
+            if len(guess_num) < 3 or len(guess_num) > 3:
+                print("Enter three numbers")
+            else:
+                break
 
-    return (my_num);
+        if guess_num == secret_num:
+            print("You won!!")
+            break
+            
+        for i in range(len(secret_num)):
+            if guess_num[i] == secret_num[i]:
+                print("Correct number at the right position")
+                print(guess_num[i])
 
-def get_guess_num():
-    guess = input("Enter your guess: ")
-
-    if len(guess) < 3 or len(guess) > 3:
-        print("Enter three numbers")
-
-    return guess
-
-
-def give_clues(my_num, guess):
-
-    if guess == my_num:
-        return "You won"
-
-    clues = ["Fermi", "Pico", "Bagels", "You won"]
-
-    for i in range(len(my_num)):
-        if my_num[i] == guess[i]:
-            return clues[0]
-
-        elif guess[i] in my_num:
-            return clues[1]
-        if not guess[i] in my_num:
-            return clues[2]
-
-    return clues
+        for i in range(len(secret_num)):
+            if guess_num[i] in secret_num:
+                print("Correct number in the wrong position")
+                print(guess_num[i])
 
 
 def main():
+    guess_number()
 
-    i = 1;
-    intro()
-
-    my_num = get_number()
-    #print(my_num)
-    while i <= 10:
-        print("\nAttempt #{}".format(i))
-        guess = get_guess_num()
-        clues = give_clues(my_num, guess)
-        print(clues)
-        i += 1
-        if clues == "You won":
-            break
-    print("Thank you for playing")
-
-
-main()
+if __name__ == "__main__":
+    main()
